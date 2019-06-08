@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Country - {{ object.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">Name: {{ object.name }}</div>
+    <div class="row">ISO: {{ object.alpha2Code }}</div>
+    <div class="row">Capital: {{ object.capital }}</div>
+    <div class="row">Area: {{ object.area }}</div>
+    <div class="row">Population: {{ object.population }}</div>
+    <div class="row"><img style="border: 1px solid; width: 350px; height: 250px;" src="{{ object.flag }}" alt="img"></div>
+{% endblock %}

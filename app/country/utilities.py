@@ -3,8 +3,12 @@ import requests
 from django.conf import settings
 
 
-def get_detail_url_by_iso(iso):
+def get_country_url_by_iso(iso):
     return f'{settings.EXTERNAL_COUNTRIES_API_BASE_URL}/alpha/{iso}'
+
+
+def get_all_countries_url():
+    return f'{settings.EXTERNAL_COUNTRIES_API_BASE_URL}/all'
 
 
 def get_every_iso_2_code_with_country_name():

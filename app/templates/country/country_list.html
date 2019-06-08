@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}All Countries{% endblock %}
+
+{% block content %}
+
+{% for country in list_countries %}
+<tr>
+    <td>{{ country.name }}</td>
+    <td>{{ country.alpha2Code }}</td>
+    <td>
+        <a  href="{% url 'country-detail'  country.alpha2Code  %}">details</a>
+    </td>
+</tr>
+{% endfor %}
+
+{% if is_paginated %}
+<ul class="pagination">
+{% if page_obj.has_previous %}
+    <li>
+        <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+    </li>
+{% endif %}
+    <li class="">
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+    </li>
+{% if page_obj.has_next %}
+    <li>
+        <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+    </li>
+{% endif %}
+</ul>
+{% else %}
+    <h3>Your Country</h3>
+    <p>No countries</p>
+{% endif %}
+
+{% endblock %}
