@@ -37,7 +37,7 @@ This will test every endpoint and core functionality. And will apply check for c
 
 1. Clone the repository:
 ```
-$ git clone git@github.com:mydjangoprojects/recipe-app-api.git
+$ git clone git@github.com:Psykepro/countries-and-diplomats-app.git
 ```
 2. Change the directory and build the docker image by executing:
 ```
@@ -52,7 +52,7 @@ If you want to be more secure and use this in production change every occurrence
 ## Running
 
 ```
-$ cd recipe-app-api
+$ cd countries-and-diplomats-app
 $ docker-compose up
 ```
 
