@@ -7,19 +7,19 @@ from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
-from core.models import Country
-from .utilities import get_country_url_by_iso, get_all_countries_url
+from .models import Country
+from .utilities import RestCountriesUtilities as RUtility
 
 
 class CountryListView(LoginRequiredMixin, ListView):
     model = Country
-    template_name = 'country/country_list.html'
+    template_name = 'country_list.html'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(CountryListView, self).get_context_data(**kwargs)
-        list_countries = self.get_queryset()
-        paginator = Paginator(list_countries, self.paginate_by)
+        countries = self.queryset
+        paginator = Paginator(countries, self.paginate_by)
 
         page = self.request.GET.get('page')
 
@@ -34,18 +34,24 @@ class CountryListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        response = requests.get(get_all_countries_url())
-        response_data = response.json()
-        return response_data
+        query = self.request.GET.get('name')
+        filters = {'name': query} if query else {}
+        response_data = RUtility.get_filtered_countries_as_json(**filters)
+        if isinstance(response_data, dict):
+            self.queryset = []
+        else:
+            self.queryset = response_data
+        return self.queryset
 
 
 class CountryDetailView(LoginRequiredMixin, DetailView):
 
     model = Country
-    template_name = 'country/country_detail.html'
+    template_name = 'country_detail.html'
 
     def get_object(self, queryset=None):
-        response = requests.get(get_country_url_by_iso(self.kwargs['iso']))
+        response = requests.get(RUtility
+                                .get_country_url_by_iso(self.kwargs['iso']))
         response_data = response.json()
         item = Country(**response_data)
         return item

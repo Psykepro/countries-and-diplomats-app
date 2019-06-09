@@ -149,6 +149,3 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT')
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT')
-
-EXTERNAL_COUNTRIES_API_BASE_URL = 'https://restcountries.eu/rest/v2'
-ISO_CODES_API_URL = 'http://country.io/names.json'

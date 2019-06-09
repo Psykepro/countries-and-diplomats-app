@@ -40,11 +40,11 @@ class PrivateCountryViewsTests(TestCase):
         response = self.client.get(COUNTRY_LIST_URL)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTemplateUsed(response, 'country/country_list.html')
+        self.assertTemplateUsed(response, 'country_list.html')
 
     def test_country_detail_GET(self):
         """Test retrieving detail of Country."""
         response = self.client.get(reverse('country-detail', args=['bg']))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTemplateUsed(response, 'country/country_detail.html')
+        self.assertTemplateUsed(response, 'country_detail.html')
