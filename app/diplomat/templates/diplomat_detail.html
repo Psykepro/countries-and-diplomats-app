@@ -3,10 +3,43 @@
 {% block title %}Diplomat - {{ object.full_name }}{% endblock %}
 
 {% block content %}
-    <div class="row">Phone: {{ object.phone }}</div>
-    <div class="row">Email: {{ object.Email }}</div>
-    <div class="row">Age: {{ object.age }}</div>
-    <div class="row">Path: {{ object.get_path_display }}</div>
-    <div class="row">Country ISO2 Code: {{ object.country_iso }}</div>
-    <div class="row">Country Name: <a href="{% url 'country-detail' object.country_iso %}">{{ object.get_country_iso_display }}</a></div>
+<table class="table table table-hover">
+    <tbody>
+    <tr>
+        <td><div class="col-md-1"><strong>Full Name:</strong></div></td>
+        <td><div class="col-md-2">{{ object.full_name }}</div></td>
+    </tr>
+    <tr>
+        <td><div class="col-md-1"><strong>Phone:</strong></div></td>
+        <td><div class="col-md-2">{{ object.phone }}</div></td>
+    </tr>
+    <tr>
+        <td><div class="col-md-1"><strong>Email:</strong></div></td>
+        <td><div class="col-md-2">{{ object.email }}</div></td>
+    </tr>
+    <tr>
+        <td><div class="col-md-1"><strong>Age:</strong></div></td>
+        <td><div class="col-md-2">{{ object.age }}</div></td>
+    </tr>
+    <tr>
+        <td><div class="col-md-1"><strong>Country ISO2 Code:</strong></div></td>
+        <td><div class="col-md-2">{{ object.country_iso }}</div></td>
+    </tr>
+    <tr>
+        <td><div class="col-md-1"><strong>Country Name:</strong></div></td>
+        <td><div class="col-md-2"><a href="{% url 'country-detail' object.country_iso %}">{{ object.get_country_iso_display }}</a></div></td>
+    </tr>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-md-2 col-md-offset-5 text-center">
+        <a href="{% url 'diplomat-edit'  diplomat.id  %}"><button class="btn btn-success btn-lg">Edit</button></a>
+    </div>
+    <div class="col-md-2 col-md-offset-5 text-center">
+        <a href="{% url 'diplomat-delete'  diplomat.id  %}"><button class="btn btn-danger btn-lg">Delete</button></a>
+    </div>
+    <div class="col-md-2 col-md-offset-5 text-center">
+        <a href="{% url 'diplomat-list'  %}"><button class="btn btn-primary btn-lg">All Diplomats</button></a>
+    </div>
+</div>
 {% endblock %}

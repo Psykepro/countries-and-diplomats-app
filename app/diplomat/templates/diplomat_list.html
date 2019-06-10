@@ -52,15 +52,23 @@
     <a href="{% url 'diplomat-new' %}">Create New</a>
 </div>
 {% if list_diplomats %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+          <th>Name: </th>
+          <th>ISO2 Code:</th>
+          <th>Country:</th>
+        </tr>
+    </thead>
     {% for diplomat in list_diplomats  %}
     <tr>
-        <td>Name: {{ diplomat.full_name }}</td>
-        <td>ISO2 Code: {{ diplomat.country_iso }}</td>
-        <td>Country: {{ diplomat.country }}</td>
+        <td><a  href="{% url 'diplomat-detail'  diplomat.id  %}">{{ diplomat.full_name }}</a></td>
+        <td>{{ diplomat.country_iso }}</td>
+        <td>{{ diplomat.country }}</td>
         <td>
-            <a  href="{% url 'diplomat-detail'  diplomat.id  %}">Details</a>
-            <a  href="{% url 'diplomat-edit'  diplomat.id  %}">Edit</a>
-            <a  href="{% url 'diplomat-delete'  diplomat.id  %}">Delete</a>
+            <div class="col-sm-2"><a  href="{% url 'diplomat-detail' diplomat.id  %}"><button class="btn btn-primary btn-sm">Details</button></a></div>
+            <div class="col-sm-2"><a  href="{% url 'diplomat-edit' diplomat.id  %}"><button class="btn btn-primary btn-sm">Edit</button></a></div>
+            <div class="col-sm-2"><a  href="{% url 'diplomat-delete' diplomat.id  %}"><button class="btn btn-primary btn-sm">Delete</button></a></div>
         </td>
     </tr>
     {% endfor %}
@@ -70,26 +78,28 @@
     <ul class="pagination">
 
         {% if page_obj.has_previous %}
-            <li>
-                <span><a href="?{% param_replace page=1 %}">First</a></span>
+            <li class="page-item">
+                <a class="page-link" href="?{% param_replace page=1 %}">First</a>
             </li>
             {% if page_obj.previous_page_number != 1 %}
-            <li>
-                <span><a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a></span>
+            <li class="page-item">
+                <a class="page-link" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
             </li>
             {% endif %}
         {% endif %}
-        <li class="">
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
-        </li>
+
+            <li class="page-item">
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            </li>
+
         {% if page_obj.has_next %}
             {% if page_obj.next_page_number != paginator.num_pages %}
-            <li>
-                <span><a href="?{% param_replace page=page_obj.next_page_number %}">Next</a></span>
+            <li class="page-item">
+                <a class="page-link" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
             </li>
             {% endif %}
-            <li>
-                <span><a href="?{% param_replace page=paginator.num_pages %}">Last</a></span>
+            <li class="page-item">
+                <a class="page-link" href="?{% param_replace page=paginator.num_pages %}">Last</a>
             </li>
         {% endif %}
     </ul>
