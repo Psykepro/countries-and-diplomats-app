@@ -35,7 +35,7 @@ class CountryListView(LoginRequiredMixin, ListView):
 
         context.update({'list_countries': countries,
                         'region_choices': REGION_CHOICES,
-                        'iso_choices': CProvider.get_iso2_codes(),
+                        'iso_choices': CProvider.get_iso2_choices(),
                         'region_selected': region_selected,
                         'iso_selected': iso_selected,
                         })

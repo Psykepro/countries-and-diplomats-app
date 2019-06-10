@@ -96,7 +96,12 @@ class CountriesIOProvider:
     @classmethod
     def get_iso2_codes(cls):
         response_data = requests.get(cls.ISO_CODES_API_URL).json()
+        return response_data
+
+    @classmethod
+    def get_iso2_choices(cls):
         res = []
-        for k, v in response_data.items():
+        iso2_items = cls.get_iso2_codes().items()
+        for k, v in iso2_items:
             res.append((k, v))
         return res

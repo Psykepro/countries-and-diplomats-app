@@ -81,6 +81,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
+
+PHONE_REGEX = r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'
 # Authentication/Authorization Related Configuration
 
 LOGIN_REDIRECT_URL = '/'

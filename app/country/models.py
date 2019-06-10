@@ -8,7 +8,7 @@ from .choices import REGION_CHOICES
 class Country(models.Model):
     """Model representing the Country Object from the External API"""
     name = models.CharField(max_length=255)
-    alpha2Code = models.CharField(choices=CProvider.get_iso2_codes(),
+    alpha2Code = models.CharField(choices=CProvider.get_iso2_choices(),
                                   max_length=2,
                                   verbose_name='ISO Code')
     capital = models.CharField(max_length=255, verbose_name='Capital City')
