@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Diplomat - {{ object.full_name }}{% endblock %}
+
+{% block content %}
+    <div class="row">Phone: {{ object.phone }}</div>
+    <div class="row">Email: {{ object.Email }}</div>
+    <div class="row">Age: {{ object.age }}</div>
+    <div class="row">Path: {{ object.get_path_display }}</div>
+    <div class="row">Country ISO2 Code: {{ object.country_iso }}</div>
+    <div class="row">Country Name: <a href="{% url 'country-detail' object.country_iso %}">{{ object.get_country_iso_display }}</a></div>
+{% endblock %}

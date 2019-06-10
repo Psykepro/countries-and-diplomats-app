@@ -7,6 +7,10 @@ from country.external_api_providers import CountriesIOProvider as CProvider
 
 class Diplomat(models.Model):
     """Class which represents the Diplomat Object"""
+
+    class Meta:
+        ordering = ['-id']
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=15,
@@ -26,7 +30,7 @@ class Diplomat(models.Model):
 
     @property
     def country(self):
-        return CProvider.get_iso2_codes().get(self.country_iso)
+        return self.get_country_iso_display()
 
     def __str__(self):
         return f'{self.full_name}: {self.get_path_display()}'

@@ -48,12 +48,14 @@
     </select>
     <input type="submit" value="Search" />
 </form>
-
+<div>
+    <a href="{% url 'diplomat-new' %}">Create New</a>
+</div>
 {% if list_diplomats %}
-    {% for diplomat in list_diplomats %}
+    {% for diplomat in list_diplomats  %}
     <tr>
         <td>Name: {{ diplomat.full_name }}</td>
-        <td>ISO2 Code: {{ diplomat.alpha2Code }}</td>
+        <td>ISO2 Code: {{ diplomat.country_iso }}</td>
         <td>Country: {{ diplomat.country }}</td>
         <td>
             <a  href="{% url 'diplomat-detail'  diplomat.id  %}">Details</a>
