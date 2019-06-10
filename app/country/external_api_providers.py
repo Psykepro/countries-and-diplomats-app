@@ -32,19 +32,41 @@ class RestCountriesProvider:
             all_countries = requests.get(cls.get_all_countries_url()).json()
             results = []
             for country in all_countries:
-                is_matched = True
-                kwargs_items = filters.items()
-                for k, v in kwargs_items:
-                    if not country.get(k, None) == v:
-                        is_matched = False
-                        break
+                filters_items = filters.items()
+                is_matched = cls.check_is_country_matched(country,
+                                                          filters_items)
                 if is_matched:
                     results.append(country)
             return results
         else:
             key = next(iter(filters))
             url = getattr(cls, f'get_country_url_by_{key}')(filters[key])
-            return requests.get(url).json()
+            results = requests.get(url).json()
+            # If there was an error return empty list,
+            # otherwise if is just 1 result return it as list
+            if isinstance(results, dict):
+                return [] if results.get('status', None) else [results]
+
+            return results
+
+    @staticmethod
+    def check_is_country_matched(country, filters_items):
+        is_matched = True
+        for key, val in filters_items:
+            # Map the 'iso' to the 'alpha2Code',
+            # because this is how it is defined in the External API
+            if key == 'iso':
+                key = 'alpha2Code'
+            # If the key is name check if contains the value don't match exact
+            if key == 'name':
+                if val not in country.get(key, None):
+                    is_matched = False
+                    break
+            else:
+                if not country.get(key, None) == val:
+                    is_matched = False
+                    break
+        return is_matched
 
     @classmethod
     def get_all_countries_url(cls):

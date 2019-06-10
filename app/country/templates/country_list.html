@@ -3,9 +3,49 @@
 {% block title %}All Countries{% endblock %}
 
 {% block content %}
+
 <form method="GET" action="">
     <input type="text" name="name" placeholder="Search Countries by Name" />
-    
+
+    <label for="region">Region:</label>
+    <select name="region" id="region">
+        {% if region_selected == '' %}
+            <option value="" selected="selected"></option>
+        {% else %}
+            <option value=""></option>
+        {% endif %}
+        {% for choice in region_choices %}
+            {% if region_selected == choice.0 %}
+                <option value="{{ choice.0 }}" selected="selected">
+                    {{ choice.1 }}
+                </option>
+            {% else %}
+            <option value="{{ choice.0 }}">
+                {{ choice.1 }}
+            </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <label for="iso">ISO2 Code:</label>
+    <select name="iso" id="iso">
+        {% if iso_selected == '' %}
+            <option value="" selected="selected"></option>
+        {% else %}
+            <option value=""></option>
+        {% endif %}
+        {% for choice in iso_choices %}
+            {% if iso_selected == choice.0 %}
+                <option value="{{ choice.0 }}" selected="selected">
+                    {{ choice.1 }}
+                </option>
+            {% else %}
+                <option value="{{ choice.0 }}">
+                    {{ choice.1 }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>
     <input type="submit" value="Search" />
 </form>
 {% if list_countries %}
@@ -19,20 +59,32 @@
     </tr>
     {% endfor %}
 
+    {% load param_replace %}
     {% if is_paginated %}
     <ul class="pagination">
+
         {% if page_obj.has_previous %}
-        <li>
-            <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
-        </li>
+            <li>
+                <span><a href="?{% param_replace page=1 %}">First</a></span>
+            </li>
+            {% if page_obj.previous_page_number != 1 %}
+            <li>
+                <span><a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a></span>
+            </li>
+            {% endif %}
         {% endif %}
         <li class="">
             <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
         </li>
         {% if page_obj.has_next %}
-        <li>
-            <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
-        </li>
+            {% if page_obj.next_page_number != paginator.num_pages %}
+            <li>
+                <span><a href="?{% param_replace page=page_obj.next_page_number %}">Next</a></span>
+            </li>
+            {% endif %}
+            <li>
+                <span><a href="?{% param_replace page=paginator.num_pages %}">Last</a></span>
+            </li>
         {% endif %}
     </ul>
     {% endif %}

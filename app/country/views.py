@@ -8,7 +8,9 @@ from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
 from .models import Country
-from .external_api_providers import RestCountriesProvider as RProvider
+from .choices import REGION_CHOICES
+from .external_api_providers import (RestCountriesProvider as RProvider,
+                                     CountriesIOProvider as CProvider)
 
 
 class CountryListView(LoginRequiredMixin, ListView):
@@ -20,7 +22,8 @@ class CountryListView(LoginRequiredMixin, ListView):
         context = super(CountryListView, self).get_context_data(**kwargs)
         countries = self.queryset
         paginator = Paginator(countries, self.paginate_by)
-
+        region_selected = self.request.GET.get('region', '')
+        iso_selected = self.request.GET.get('iso', '')
         page = self.request.GET.get('page')
 
         try:
@@ -30,22 +33,31 @@ class CountryListView(LoginRequiredMixin, ListView):
         except EmptyPage:
             countries = paginator.page(paginator.num_pages)
 
-        context['list_countries'] = countries
+        context.update({'list_countries': countries,
+                        'region_choices': REGION_CHOICES,
+                        'iso_choices': CProvider.get_iso2_codes(),
+                        'region_selected': region_selected,
+                        'iso_selected': iso_selected,
+                        })
         return context
 
+    def _get_filters(self):
+        filters = {}
+
+        for filter_key in RProvider.SUPPORTED_COUNTRY_FILTERS:
+            filter_val = self.request.GET.get(filter_key)
+            if filter_val:
+                filters.update({filter_key: filter_val})
+
+        return filters
+
     def get_queryset(self):
-        query = self.request.GET.get('name')
-        filters = {'name': query} if query else {}
-        response_data = RProvider.get_filtered_countries_as_json(**filters)
-        if isinstance(response_data, dict):
-            self.queryset = []
-        else:
-            self.queryset = response_data
+        filters = self._get_filters()
+        self.queryset = RProvider.get_filtered_countries_as_json(**filters)
         return self.queryset
 
 
 class CountryDetailView(LoginRequiredMixin, DetailView):
-
     model = Country
     template_name = 'country_detail.html'
 
