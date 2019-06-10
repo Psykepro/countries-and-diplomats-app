@@ -1,25 +1,26 @@
 from django.db import models
 
-from .utilities import (RestCountriesUtilities as RUtility,
-                        CountriesIOUtilities as CUtility)
+from .external_api_providers import (RestCountriesProvider as RProvider,
+                                     CountriesIOProvider as CProvider)
+from .choices import REGION_CHOICES
 
 
 class Country(models.Model):
     """Model representing the Country Object from the External API"""
     name = models.CharField(max_length=255)
-    alpha2Code = models.CharField(choices=CUtility.get_iso2_codes(),
+    alpha2Code = models.CharField(choices=CProvider.get_iso2_codes(),
                                   max_length=2,
                                   verbose_name='ISO Code')
     capital = models.CharField(max_length=255, verbose_name='Capital City')
     area = models.IntegerField()
     population = models.IntegerField()
     flag = models.ImageField(null=True)
-    region = models.CharField(choices=RUtility.REGION_CHOICES,
+    region = models.CharField(choices=REGION_CHOICES,
                               max_length=max([len(x[0]) for x
-                                              in RUtility.REGION_CHOICES]))
+                                              in REGION_CHOICES]))
 
     def __init__(self, *args, **kwargs):
-        kwargs = RUtility\
+        kwargs = RProvider\
             .extract_defined_fields_only(self.__class__, kwargs)
         super(Country, self).__init__(*args, **kwargs)
 

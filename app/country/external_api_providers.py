@@ -1,13 +1,10 @@
 import requests
 
 
-class RestCountriesUtilities:
+class RestCountriesProvider:
     """Class containing Utility Methods and Constants for
-    accessing the External API RestCountries.eu"""
+    providing the data from External API RestCountries.eu"""
 
-    REGION_CHOICES = [('Africa', 'Africa'), ('Americas', 'Americas'),
-                      ('Asia',  'Asia'), ('Europe', 'Europe'),
-                      ('Oceania', 'Oceania'), ('Polar', 'Polar')]
     SUPPORTED_COUNTRY_FILTERS = ['name', 'iso', 'region']
     EXTERNAL_COUNTRIES_API_BASE_URL = 'https://restcountries.eu/rest/v2'
 
@@ -68,9 +65,9 @@ class RestCountriesUtilities:
         return extracted_fields
 
 
-class CountriesIOUtilities:
+class CountriesIOProvider:
     """Class containing Utility Methods and Constants for
-        accessing the External API Countries.io"""
+    providing the data from External API Country.io"""
 
     ISO_CODES_API_URL = 'http://country.io/names.json'
 

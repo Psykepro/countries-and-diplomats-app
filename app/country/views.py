@@ -8,7 +8,7 @@ from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
 from .models import Country
-from .utilities import RestCountriesUtilities as RUtility
+from .external_api_providers import RestCountriesProvider as RProvider
 
 
 class CountryListView(LoginRequiredMixin, ListView):
@@ -36,7 +36,7 @@ class CountryListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         query = self.request.GET.get('name')
         filters = {'name': query} if query else {}
-        response_data = RUtility.get_filtered_countries_as_json(**filters)
+        response_data = RProvider.get_filtered_countries_as_json(**filters)
         if isinstance(response_data, dict):
             self.queryset = []
         else:
@@ -50,7 +50,7 @@ class CountryDetailView(LoginRequiredMixin, DetailView):
     template_name = 'country_detail.html'
 
     def get_object(self, queryset=None):
-        response = requests.get(RUtility
+        response = requests.get(RProvider
                                 .get_country_url_by_iso(self.kwargs['iso']))
         response_data = response.json()
         item = Country(**response_data)
