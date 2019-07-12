@@ -3,7 +3,7 @@
 Countries And Diplomats APP
 
 ## Build Status
-[![Build Status](https://travis-ci.org/Psykepro/countries-and-diplomats-app.svg?branch=master)](https://travis-ci.org/Psykepro/countries-and-diplomats-app)
+[![Build Status](https://travis-ci.org/mydjangoprojects/countries-and-diplomats-app.svg?branch=master)](https://travis-ci.org/mydjangoprojects/countries-and-diplomats-app)
 
 ## Getting Started
 
